@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Sports Card Showcase</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --accent: #1e3a8a;
+            --success: #10b981;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            max-width: 1200px;
+            margin: 0 auto 30px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 20px;
+        }
+        .stats-box {
+            background-color: var(--accent);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-align: right;
+        }
+        .stats-box span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block;
+            color: var(--success);
+        }
+        .grid-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: transform 0.2s;
+            border: 1px solid #e5e7eb;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-img {
+            width: 100%;
+            height: 350px;
+            background-color: #e5e7eb;
+            object-fit: cover;
+        }
+        .card-info {
+            padding: 20px;
+        }
+        .card-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+        }
+        .card-details {
+            font-size: 0.9rem;
+            color: #4b5563;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .card-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--accent);
+            border-top: 1px solid #f3f4f6;
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        #loading {
+            text-align: center;
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1 style="margin:0;">Personal Showcase</h1>
+            <p style="margin:5px 0 0 0; color:#6b7280;">My Sports Card Portfolio & Live Valuation</p>
+        </div>
+        <div class="stats-box">
+            Total Estimated Value
+            <span id="total-portfolio-value">$0.00</span>
+        </div>
+    </header>
+
+    <main class="grid-container" id="gallery-grid">
+        <div id="loading">Loading your collection live from Google Sheets...</div>
+    </main>
+
+    <script>
+        // 1. REPLACE THIS WITH YOUR OWN GOOGLE SHEET ID LATER
+        const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID_HERE';
+        const SHEET_TITLE = 'Sheet1'; 
+        const SHEET_RANGE = 'A2:J1000'; // Reads rows 2 through 1000, columns A through J
+
+        const FULL_URL = `https://google.com{SHEET_ID}/gviz/tq?sheet=${SHEET_TITLE}&range=${SHEET_RANGE}`;
+
+        fetch(FULL_URL)
+        .then(res => res.text())
+        .then(rep => {
+            // Clean up Google's specialized database response format
+            const data = JSON.parse(rep.substr(47).slice(0, -2));
+            const grid = document.getElementById('gallery-grid');
+            const totalValueEl = document.getElementById('total-portfolio-value');
+            
+            grid.innerHTML = ''; // Clear out the loading text
+            
+            let totalPortfolioSum = 0;
+
+            // Loop through every row in your spreadsheet automatically
+            data.table.rows.forEach(row => {
+                // Mapping spreadsheet columns safely (checks if cell is empty)
+                const sport = row.c[1] ? row.c[1].v : '';
+                const year = row.c[2] ? row.c[2].v : '';
+                const brand = row.c[3] ? row.c[3].v : '';
+                const cardNum = row.c[4] ? row.c[4].v : '';
+                const playerName = row.c[5] ? row.c[5].v : 'Unknown Player';
+                const attributes = row.c[6] ? row.c[6].v : 'None';
+                const condition = row.c[7] ? row.c[7].v : 'Raw';
+                const price = row.c[8] ? parseFloat(row.c[8].v) : 0;
+                const photoUrl = row.c[9] ? row.c[9].v : 'https://placeholder.com';
+
+                totalPortfolioSum += price;
+
+                // Create the HTML structure for this specific card
+                const cardHtml = `
+                    <div class="card">
+                        <img src="${photoUrl}" alt="${playerName}" class="card-img">
+                        <div class="card-info">
+                            <div class="card-tag">${year} ${brand} • ${sport}</div>
+                            <div class="card-title">${playerName}</div>
+                            <div class="card-details">
+                                <strong>Card #:</strong> ${cardNum} <br>
+                                <strong>Attributes:</strong> ${attributes} <br>
+                                <strong>Condition:</strong> ${condition}
+                            </div>
+                            <div class="card-price">
+                                <span>Est. Value:</span>
+                                <span style="color:#10b981;">$${price.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+
+            // Update the top box with the math calculation results
+            totalValueEl.innerText = `$${totalPortfolioSum.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        })
+        .catch(err => {
+            document.getElementById('loading').innerText = "Error loading collection data. Make sure your sheet is set to 'Public'.";
+            console.error(err);
+        });
+    </script>
+</body>
+</html>
