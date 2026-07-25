@@ -118,16 +118,17 @@
 <body>
 
     <header>
-        <div>
-            <h1 style="margin:0;">Personal Showcase</h1>
-            <p style="margin:5px 0 0 0; color:#ffffff;">My Sports Card Portfolio & Live Valuation</p>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <img src="logo.png" alt="Matt's Cards Logo" style="max-height: 60px; width: auto; object-fit: contain; align-self: flex-start;">
+            
+            <p style="margin:0; color:#ffffff;">My Sports Card Portfolio & Live Valuation</p>
         </div>
         <div class="stats-box">
             Total Estimated Value
             <span id="total-portfolio-value">$0.00</span>
         </div>
     </header>
-
+    
     <main class="grid-container" id="gallery-grid">
         <div id="loading">Loading your collection live from Google Sheets...</div>
     </main>
