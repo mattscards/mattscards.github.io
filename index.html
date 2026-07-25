@@ -59,13 +59,14 @@
         .card {
             background-color: var(--card-bg);
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             overflow: hidden;
-            transition: transform 0.2s;
-            border: 1px solid #e5e7eb;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            border: 1px solid #2d2d2d; 
         }
         .card:hover {
             transform: translateY(-5px);
+            border-color: var(--accent); 
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.15); 
         }
         .card-img {
             width: 100%;
