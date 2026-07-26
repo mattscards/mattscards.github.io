@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matt's Card Collection</title>
+    <title>MATT'$ CARD$</title>
     <style>
         :root {
             --bg-color: #000000;
@@ -48,7 +48,6 @@
             margin-top: 5px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
         }
-        /* FIX: Changed card column minimum size from 230px down to a skinnier 190px format */
         .grid-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -72,7 +71,6 @@
             border-color: #ffffff !important; 
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); 
         }
-        /* FIX: Altered image window proportions from 280px tall down to 260px tall to remove side padding */
         .card-img {
             width: 100%;
             height: 260px; 
@@ -95,14 +93,16 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
         .card-title {
-            font-size: 1rem; /* Condensed slightly to look clean inside a narrower container */
+            font-size: 1rem; 
             font-weight: bold; 
             margin: 0 0 8px 0;
             line-height: 1.3;
-            color: #000000; 
+            color: #000000;
             -webkit-text-stroke: unset; 
-            text-shadow: none; 
-            text-align: center; 
+            text-align: center;
+            text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.4), 
+                         2px 2px 0px rgba(0, 0, 0, 0.5), 
+                         3px 3px 2px rgba(0, 0, 0, 0.6);
         }
         .card-details {
             font-size: 0.8rem; 
@@ -158,10 +158,10 @@
 
     <header>
         <div style="display: flex; flex-direction: column; gap: 15px;">
-            <img src="logo.png" alt="Matt's Cards Logo" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
+            <img src="header.png" alt="MATT'$ CARD$" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
             <p style="margin:0; color:#ffffff; font-size: 1.2rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;
                       text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
-                My Sports Card Portfolio & Live Valuation
+                Sports Card Portfolio & Live Valuation
             </p>
         </div>
         <div class="stats-box">
@@ -175,8 +175,7 @@
     </main>
 
     <script>
-        // UPDATE THIS WITH YOUR OWN PUBLIC SPORTSCARDSPRO PROFILE LINK LATER
-        const MY_COLLECTION_URL = 'https://sportscardspro.com';
+        const MY_COLLECTION_URL = 'https://www.sportscardspro.com/offers?seller=xpx2saa54ajblfoc25cjsiw7ne&status=collection';
 
         fetch('collection.csv')
         .then(res => {
