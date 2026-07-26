@@ -157,13 +157,25 @@
                 left: 0;
                 width: 100%;
                 z-index: 1000;
-                line-height: 0; /* Prevents tiny blank gaps below the image */
+                line-height: 0;
             }
-
             .bottom-banner img {
                 width: 100%;
                 height: auto;
                 display: block;
+            }
+            .bottom-banner-wrapper {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: transparent;
+                z-index: 1000;
+            }
+            .bottom-banner-container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
             }
         }
     </style>
