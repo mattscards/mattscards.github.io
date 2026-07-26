@@ -197,7 +197,7 @@
                 totalPortfolioSum += (price * quantity);
 
                 // Fetch official database media cover graphic instantly using the card ID code
-                const photoUrl = cardId ? `https://sportscardspro.com{cardId}.jpg` : 'https://placeholder.com';
+                const photoUrl = cardId ? `https://imgur.com{cardId}.jpg` : 'https://unsplash.com';
 
                 // Build a nice grading company label combination strings cleanly
                 let finalCondition = condition;
@@ -209,7 +209,7 @@
 
                 const cardHtml = `
                     <div class="card">
-                        <img src="${photoUrl}" alt="${productName}" class="card-img" onerror="this.onerror=null; this.src='https://placeholder.com'">
+                        <img src="${photoUrl}" alt="${productName}" class="card-img" onerror="this.onerror=null; this.src='https://unsplash.com';">
                         <div class="card-info">
                             <div class="card-tag">${sport}</div>
                             <div class="card-title">${productName}</div>
