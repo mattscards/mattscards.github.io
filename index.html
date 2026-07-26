@@ -151,6 +151,20 @@
             .stats-box {
                 width: 90%;
             }
+            .bottom-banner {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1000;
+                line-height: 0; /* Prevents tiny blank gaps below the image */
+            }
+
+            .bottom-banner img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
         }
     </style>
 </head>
@@ -257,8 +271,12 @@
         });
     </script>
             <br>
-            <center>
-            <p style="margin:0; color:#ffffff; font-size: .65rem; font-weight: bold; letter-spacing: 0.05em;
+   <center>
+   <div class="bottom-banner">
+   <img src="banner.jpeg" alt="Banner">
+   </div>
+       <br>
+       <p style="margin:0; color:#ffffff; font-size: .65rem; font-weight: bold; letter-spacing: 0.05em;
                       text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
                 Copyright © 1985-2026 Matt'$ Card$
             </p>
