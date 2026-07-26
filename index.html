@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATT'$ CARD$</title>
+    <title>Matt's Card Collection</title>
     <style>
         :root {
             --bg-color: #000000;
@@ -51,8 +51,6 @@
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px;
         }
-        
-        /* Turning the entire card container into a clickable link style */
         .card-link {
             text-decoration: none !important;
             color: inherit !important;
@@ -84,6 +82,7 @@
             font-weight: bold;
             margin: 0 0 15px 0;
             line-height: 1.4;
+            color: var(--accent);
         }
         .card-details {
             font-size: 0.95rem;
@@ -133,10 +132,10 @@
 
     <header>
         <div style="display: flex; flex-direction: column; gap: 15px;">
-            <img src="header.png" alt="MATT'$ CARD$" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
+            <img src="header.png" alt="MATT'S CARDS" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
             <p style="margin:0; color:#ffffff; font-size: 1.2rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;
                       text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
-                Sports Card Portfolio & Live Valuation
+                My Sports Card Portfolio & Live Valuation
             </p>
         </div>
         <div class="stats-box">
@@ -150,8 +149,7 @@
     </main>
 
     <script>
-        // 1. PUT YOUR EXACT PUBLIC SPORTSCARDSPRO PROFILE LINK HERE
-        const MY_COLLECTION_URL = 'https://sportscardspro.com';
+        const MY_COLLECTION_URL = 'https://www.sportscardspro.com/offers?seller=xpx2saa54ajblfoc25cjsiw7ne&status=collection';
 
         fetch('collection.csv')
         .then(res => {
@@ -185,20 +183,19 @@
                 const priceInPennies = parseFloat(cells[3] ? cells[3].replace(/^"|"$/g, '').trim() : 0) || 0;
                 const price = priceInPennies / 100;
 
-                const condition = cells[5] ? cells[5].replace(/^"|"$/g, '').trim() : 'Ungraded';
+                const includeString = cells[4] ? cells[4].replace(/^"|"$/g, '').trim() : '';
                 const quantity = parseInt(cells[9] ? cells[9].replace(/^"|"$/g, '').trim() : 1) || 1;
                 const gradingCompany = cells[12] ? cells[12].replace(/^"|"$/g, '').trim() : '';
                 
                 totalPortfolioSum += (price * quantity);
 
-                let finalCondition = condition;
+                let finalDetailsLabel = includeString;
                 if (gradingCompany && gradingCompany !== 'None' && gradingCompany !== 'null' && gradingCompany !== 'undefined') {
-                    finalCondition = `${gradingCompany} ${condition}`;
+                    finalDetailsLabel = `${gradingCompany} - ${includeString}`;
                 }
 
                 let qtyDisplay = quantity > 1 ? `<strong>Qty:</strong> ${quantity}<br>` : '';
 
-                // Wraps the card layout inside an anchor tag pointing directly to your profile link
                 const cardHtml = `
                     <a href="${MY_COLLECTION_URL}" target="_blank" class="card-link">
                         <div class="card">
@@ -206,7 +203,7 @@
                                 <div class="card-tag">${sport}</div>
                                 <div class="card-title">${productName}</div>
                                 <div class="card-details">
-                                    <strong>Condition:</strong> ${finalCondition} <br>
+                                    <strong>Details:</strong> ${finalDetailsLabel} <br>
                                     ${qtyDisplay}
                                 </div>
                                 <div class="card-price">
