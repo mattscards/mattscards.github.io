@@ -11,8 +11,6 @@
         th { background-color: #f2f2f2; }
         #error-msg { color: red; font-weight: bold; margin-top: 20px; }
     </style>
-    <!-- Loading PapaParse to handle splitting the spreadsheet text row by row -->
-    <script src="https://cloudflare.com"></script>
 </head>
 <body>
 
@@ -22,7 +20,7 @@
     <div id="error-msg"></div>
 
     <table id="test-table">
-        <!-- The headers and rows will be generated here by the computer -->
+        <!-- Rows will generate here -->
     </table>
 
     <script>
@@ -33,24 +31,27 @@
             return res.text();
         })
         .then(csvText => {
-            // Parse the CSV text into basic arrays of columns
-            const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
-            const rows = parsed.data;
             const table = document.getElementById('test-table');
             
-            if (rows.length === 0) {
+            // Split the text file into individual rows using the line breaks
+            const rows = csvText.trim().split('\n');
+
+            if (rows.length === 0 || csvText.trim() === "") {
                 document.getElementById('error-msg').innerText = "The collection.csv file was found, but it appears to be completely empty.";
                 return;
             }
 
-            // Loop through every single row found in the CSV file
-            rows.forEach((row, index) => {
+            // Loop through every single row found in the CSV text
+            rows.forEach((rowText, index) => {
                 const tr = document.createElement('tr');
                 
-                // Loop through every column cell inside that row
-                row.forEach(cellText => {
+                // Native JavaScript split: break the row apart by its commas
+                const cells = rowText.split(',');
+                
+                cells.forEach(cellText => {
                     const cell = document.createElement(index === 0 ? 'th' : 'td');
-                    cell.innerText = cellText;
+                    // Clean up any extra quotation marks that spreadsheets add around text
+                    cell.innerText = cellText.replace(/^"|"$/g, '').trim();
                     tr.appendChild(cell);
                 });
                 
