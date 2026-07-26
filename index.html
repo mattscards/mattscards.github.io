@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matt's Card Collection</title>
+    <title>MATT'S CARDS</title>
     <style>
         :root {
             --bg-color: #000000;
@@ -45,11 +45,70 @@
             margin-top: 5px;
         }
         
-        /* Temporary Raw Table Styling for Dark Mode */
-        table { width: 100%; max-width: 1200px; margin: 20px auto; border-collapse: collapse; background-color: var(--card-bg); }
-        th, td { border: 1px solid #2d2d2d; padding: 12px; text-align: left; }
-        th { background-color: #1e293b; color: #ffffff; font-weight: bold; }
-        #error-msg { color: var(--accent); font-weight: bold; text-align: center; margin-top: 20px; }
+        /* The Gorgeous Red-Glow Card Grid Container */
+        .grid-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            border: 1px solid #2d2d2d;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.15);
+        }
+        .card-img {
+            width: 100%;
+            height: 380px;
+            background-color: #1a1a1a;
+            object-fit: contain;
+            padding-top: 10px;
+        }
+        .card-info {
+            padding: 20px;
+        }
+        .card-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #a1a1aa;
+            margin-bottom: 5px;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+        }
+        .card-details {
+            font-size: 0.9rem;
+            color: #d4d4d8;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .card-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--text-main);
+            border-top: 1px solid #2d2d2d;
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        #error-msg { 
+            color: var(--accent); 
+            font-weight: bold; 
+            text-align: center; 
+            grid-column: 1 / -1;
+            padding: 40px; 
+        }
 
         @media (max-width: 768px) {
             header {
@@ -76,10 +135,10 @@
 
     <header>
         <div style="display: flex; flex-direction: column; gap: 15px;">
-            <img src="logo.png" alt="Matt's Cards Logo" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
+            <img src="header.png" alt="Matt's Cards Logo" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
             <p style="margin:0; color:#ffffff; font-size: 1.2rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;
                       text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
-                My Sports Card Portfolio & Live Valuation
+                Sports Card Portfolio & Live Valuation
             </p>
         </div>
         <div class="stats-box">
@@ -88,11 +147,10 @@
         </div>
     </header>
 
-    <div id="error-msg"></div>
-
-    <table id="test-table">
-        <!-- Rows will generate here -->
-    </table>
+    <!-- The grid replacing the ugly data table matrix -->
+    <main class="grid-container" id="gallery-grid">
+        <div id="error-msg">Loading your collection live from file container...</div>
+    </main>
 
     <script>
         fetch('collection.csv')
@@ -101,42 +159,79 @@
             return res.text();
         })
         .then(csvText => {
-            const table = document.getElementById('test-table');
-            const rows = csvText.trim().split('\n');
+            const grid = document.getElementById('gallery-grid');
+            const lines = csvText.trim().split('\n');
             const totalValueEl = document.getElementById('total-portfolio-value');
+            
+            grid.innerHTML = ''; 
             let totalPortfolioSum = 0;
 
-            if (rows.length === 0 || csvText.trim() === "") {
-                document.getElementById('error-msg').innerText = "The collection.csv file appears to be completely empty.";
+            if (lines.length === 0 || csvText.trim() === "") {
+                grid.innerHTML = '<div id="error-msg">The collection.csv file appears to be completely empty.</div>';
                 return;
             }
 
-            rows.forEach((rowText, index) => {
-                const tr = document.createElement('tr');
-                const cells = rowText.split(',');
+            // Loop starting at index 1 to safely skip the text column header titles row
+            for (let i = 1; i < lines.length; i++) {
+                const lineText = lines[i].trim();
+                if (!lineText) continue; // Skip blank layout lines safely
+
+                // Parse row text accurately by commas
+                const cells = lineText.split(',');
+
+                // Extract fields by your strict columns placement sequence order
+                const cardId = cells[0] ? cells[0].replace(/^"|"$/g, '').trim() : '';
+                const productName = cells[1] ? cells[1].replace(/^"|"$/g, '').trim() : 'Unknown Card';
                 
-                // If it's a data row, let's look for the price column (Column D / Index 3) to calculate the total portfolio value box
-                if (index > 0 && cells[3]) {
-                    // Stripping quotes and parsing pennies from your specific layout
-                    const priceInPennies = parseFloat(cells[3].replace(/^"|"$/g, '').trim()) || 0;
-                    const quantity = parseInt(cells[9]?.replace(/^"|"$/g, '').trim()) || 1; // Quantity is Column J / Index 9
-                    totalPortfolioSum += (priceInPennies / 100) * quantity;
+                let sport = cells[2] ? cells[2].replace(/^"|"$/g, '').trim() : '';
+                sport = sport.replace(' Cards', ''); // Clean up layout text labels
+
+                const priceInPennies = parseFloat(cells[3] ? cells[3].replace(/^"|"$/g, '').trim() : 0) || 0;
+                const price = priceInPennies / 100;
+
+                const condition = cells[5] ? cells[5].replace(/^"|"$/g, '').trim() : 'Ungraded';
+                const quantity = parseInt(cells[9] ? cells[9].replace(/^"|"$/g, '').trim() : 1) || 1;
+                const gradingCompany = cells[12] ? cells[12].replace(/^"|"$/g, '').trim() : '';
+
+                // Add to dynamic dashboard balance calculation math
+                totalPortfolioSum += (price * quantity);
+
+                // Fetch official database media cover graphic instantly using the card ID code
+                const photoUrl = cardId ? `https://pricecharting.com{cardId}.jpg` : 'https://placeholder.com';
+
+                // Build a nice grading company label combination strings cleanly
+                let finalCondition = condition;
+                if (gradingCompany && gradingCompany !== 'None' && gradingCompany !== 'null' && gradingCompany !== 'undefined') {
+                    finalCondition = `${gradingCompany} ${condition}`;
                 }
 
-                cells.forEach(cellText => {
-                    const cell = document.createElement(index === 0 ? 'th' : 'td');
-                    cell.innerText = cellText.replace(/^"|"$/g, '').trim();
-                    tr.appendChild(cell);
-                });
-                
-                table.appendChild(tr);
-            });
+                let qtyDisplay = quantity > 1 ? `<strong>Qty:</strong> ${quantity}<br>` : '';
 
-            // Update the top box calculation dynamically
+                const cardHtml = `
+                    <div class="card">
+                        <img src="${photoUrl}" alt="${productName}" class="card-img" onerror="this.src='https://placeholder.com'">
+                        <div class="card-info">
+                            <div class="card-tag">${sport}</div>
+                            <div class="card-title">${productName}</div>
+                            <div class="card-details">
+                                <strong>Condition:</strong> ${finalCondition} <br>
+                                ${qtyDisplay}
+                            </div>
+                            <div class="card-price">
+                                <span>Est. Value:</span>
+                                <span style="color:var(--success);">$${price.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            }
+
+            // Push final total currency calculation out to your top dashboard box
             totalValueEl.innerText = `$${totalPortfolioSum.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         })
         .catch(err => {
-            document.getElementById('error-msg').innerText = "System Failure: " + err.message;
+            document.getElementById('gallery-grid').innerHTML = '<div id="error-msg">System Failure: ' + err.message + '</div>';
             console.error(err);
         });
     </script>
