@@ -7,10 +7,10 @@
     <style>
         :root {
             --bg-color: #000000;
-            --card-bg: #121212;
-            --text-main: #ffffff;
-            --accent: #ff0000;
-            --success: #107B13;
+            --card-bg: #ff0000;  /* FIX: Changed card backgrounds to solid theme red */
+            --text-main: #ffffff; /* All body text rows are crisp white */
+            --accent: #ff0000;   
+            --success: #107B13;  /* Restored your rich corporate green for money values */
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -29,8 +29,8 @@
             padding-bottom: 20px;
         }
         .stats-box {
-            background-color: #1e293b;
-            color: #ffffff;
+            background-color: #ffffff;
+            color: var(--accent);
             padding: 15px 25px;
             border-radius: 8px;
             text-align: right;
@@ -41,7 +41,7 @@
             font-size: 1.5rem;
             font-weight: bold;
             display: block;
-            color: var(--success);
+            color: var(--accent); 
             margin-top: 5px;
         }
         .grid-container {
@@ -60,12 +60,12 @@
             border-radius: 12px;
             overflow: hidden;
             transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            border: 1px solid #2d2d2d;
+            border: 2px solid #ff0000;
         }
         .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.15);
+            transform: translateY(-2px);
+            border-color: #ffffff !important;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
         }
         .card-img {
             width: 100%;
@@ -82,7 +82,8 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: #a1a1aa;
+            color: #ffffff;
+            font-weight: bold;
             margin-bottom: 8px;
         }
         .card-title {
@@ -90,20 +91,22 @@
             font-weight: bold;
             margin: 0 0 15px 0;
             line-height: 1.4;
-            color: var(--accent);
+            color: #ff0000; 
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
         }
         .card-details {
             font-size: 0.95rem;
-            color: #d4d4d8;
+            color: #ffffff;
             margin-bottom: 20px;
             line-height: 1.5;
         }
         .card-price {
             font-size: 1.3rem;
             font-weight: bold;
-            color: var(--text-main);
-            border-top: 1px solid #2d2d2d;
-            padding-top: 15px;
+            color: #ffffff;
+            background-color: #111827;
+            margin: 0 -20px -20px -20px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
         }
@@ -140,10 +143,10 @@
 
     <header>
         <div style="display: flex; flex-direction: column; gap: 15px;">
-            <img src="logo.png" alt="Matt's Cards Logo" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
+            <img src="header.png" alt="MATT'S CARDS" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
             <p style="margin:0; color:#ffffff; font-size: 1.2rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;
                       text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
-                My Sports Card Portfolio & Live Valuation
+                Sports Card Portfolio & Live Valuation
             </p>
         </div>
         <div class="stats-box">
@@ -157,8 +160,7 @@
     </main>
 
     <script>
-        // UPDATE THIS WITH YOUR OWN PUBLIC SPORTSCARDSPRO PROFILE LINK LATER
-        const MY_COLLECTION_URL = 'https://sportscardspro.com';
+        const MY_COLLECTION_URL = 'https://www.sportscardspro.com/offers?seller=xpx2saa54ajblfoc25cjsiw7ne&status=collection';
 
         fetch('collection.csv')
         .then(res => {
@@ -184,7 +186,6 @@
 
                 const cells = lineText.split(',');
 
-                // Explicit capitalization layout match across the script variables
                 const cardID = cells[0] ? cells[0].replace(/^"|"$/g, '').trim() : '';
                 const productName = cells[1] ? cells[1].replace(/^"|"$/g, '').trim() : 'Unknown Card';
                 
@@ -200,7 +201,6 @@
                 
                 totalPortfolioSum += (price * quantity);
 
-                // Safe fallback matching your exact capitalized variable
                 const photoUrl = cardID ? `${cardID}.jpg` : 'https://unsplash.com';
 
                 let finalDetailsLabel = includeString;
@@ -213,7 +213,6 @@
                 const cardHtml = `
                     <a href="${MY_COLLECTION_URL}" target="_blank" class="card-link">
                         <div class="card">
-                            <!-- Fixed layout loop tag matching cardID exactly -->
                             <img src="${photoUrl}" alt="${productName}" class="card-img" onerror="this.onerror=null; this.src='https://unsplash.com';">
                             <div class="card-info">
                                 <div class="card-tag">${sport}</div>
