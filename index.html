@@ -3,233 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matt's Card Collection</title>
+    <title>CSV Testing Table</title>
     <style>
-        :root {
-            --bg-color: #000000;
-            --card-bg: #121212;
-            --text-main: #ffffff;
-            --accent: #ff0000;
-            --success: #107B13;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-        }
-        header {
-            max-width: 1200px;
-            margin: 0 auto 30px auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #2d2d2d;
-            padding-bottom: 20px;
-        }
-        .stats-box {
-            background-color: #1e293b;
-            color: #ffffff;
-            padding: 15px 25px;
-            border-radius: 8px;
-            text-align: right;
-            font-weight: bold;
-            border: 2px solid var(--accent);
-        }
-        .stats-box span {
-            font-size: 1.5rem;
-            font-weight: bold;
-            display: block;
-            color: var(--success);
-            margin-top: 5px;
-        }
-        .grid-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            border: 1px solid #2d2d2d;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.15);
-        }
-        .card-img {
-            width: 100%;
-            height: 380px;
-            background-color: #1a1a1a;
-            object-fit: contain;
-            padding-top: 10px;
-        }
-        .card-info {
-            padding: 20px;
-        }
-        .card-tag {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #a1a1aa;
-            margin-bottom: 5px;
-        }
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 0 0 10px 0;
-        }
-        .card-details {
-            font-size: 0.9rem;
-            color: #d4d4d8;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-        .card-price {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--text-main);
-            border-top: 1px solid #2d2d2d;
-            padding-top: 10px;
-            display: flex;
-            justify-content: space-between;
-        }
-        #loading {
-            text-align: center;
-            font-size: 1.2rem;
-            grid-column: 1 / -1;
-            padding: 40px;
-            color: #a1a1aa;
-        }
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column !important;
-                align-items: center !important;
-                text-align: center !important;
-                gap: 20px;
-            }
-            header div {
-                align-items: center !important;
-            }
-            header img {
-                align-self: center !important;
-                max-height: 90px !important;
-            }
-            .stats-box {
-                width: 90%;
-                text-align: center !important;
-            }
-        }
+        body { font-family: sans-serif; padding: 20px; background-color: #ffffff; color: #000000; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #dddddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        #error-msg { color: red; font-weight: bold; margin-top: 20px; }
     </style>
-    <!-- We are loading PapaParse, the world's most trusted, free, ad-free CSV reader tool -->
+    <!-- Loading PapaParse to handle splitting the spreadsheet text row by row -->
     <script src="https://cloudflare.com"></script>
 </head>
 <body>
 
-    <header>
-        <div style="display: flex; flex-direction: column; gap: 15px;">
-            <img src="header.png" alt="Matt's Cards Logo" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
-            <p style="margin:0; color:#ffffff; font-size: 1.2rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;
-                      text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
-                My Sports Card Portfolio & Live Valuation
-            </p>
-        </div>
-        <div class="stats-box">
-            Total Estimated Value
-            <span id="total-portfolio-value">$0.00</span>
-        </div>
-    </header>
+    <h1>CSV Connection Test Matrix</h1>
+    <p>If the script works, your raw spreadsheet data will appear in the table below:</p>
 
-    <main class="grid-container" id="gallery-grid">
-        <div id="loading">Loading your portfolio data live...</div>
-    </main>
+    <div id="error-msg"></div>
+
+    <table id="test-table">
+        <!-- The headers and rows will be generated here by the computer -->
+    </table>
 
     <script>
-
-           const FULL_URL = 'collection.csv';
-
-        fetch(FULL_URL)
+        // Directly target the file sitting in your GitHub folder
+        fetch('collection.csv')
         .then(res => {
-            if (!res.ok) throw new Error("Could not find collection.csv");
+            if (!res.ok) throw new Error("The website could not find a file named 'collection.csv' in your GitHub folder.");
             return res.text();
         })
         .then(csvText => {
-            // Read columns as raw lines to avoid strict case-matching freezes
-            const parsedData = Papa.parse(csvText.trim(), { 
-                header: false, // We read by position index numbers so formatting cannot break it
-                skipEmptyLines: true
-            });
+            // Parse the CSV text into basic arrays of columns
+            const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
+            const rows = parsed.data;
+            const table = document.getElementById('test-table');
             
-            const rows = parsedData.data;
-            const grid = document.getElementById('gallery-grid');
-            const totalValueEl = document.getElementById('total-portfolio-value');
-            
-            grid.innerHTML = ''; 
-            let totalPortfolioSum = 0;
-
-            // Loop starting at Index 1 to safely skip your header titles row
-            for (let i = 1; i < rows.length; i++) {
-                const row = rows[i];
-                if (!row || row.length < 4) continue;
-
-                // Absolute column mapping based on your exact CSV list structure:
-                const cardId = row[0] || '';              // id
-                const productName = row[1] || 'Unknown';   // product-name
-                
-                let sport = String(row[2] || '');         // console-name
-                sport = sport.replace(' Cards', ''); 
-
-                const priceInPennies = parseFloat(row[3]) || 0; // price-in-pennies
-                const price = priceInPennies / 100;
-
-                const condition = row[5] || 'Ungraded';   // condition-string
-                const quantity = parseInt(row[9]) || 1;   // quantity
-                const gradingCompany = row[12] || '';     // grading-company
-
-                totalPortfolioSum += (price * quantity);
-
-                // Fetch official thumbnail image link based on its database index code
-                const photoUrl = cardId ? `https://pricecharting.com{cardId}.jpg` : 'https://placeholder.com';
-
-                let finalCondition = condition;
-                if (gradingCompany && gradingCompany !== 'None' && gradingCompany !== 'null' && gradingCompany !== 'undefined') {
-                    finalCondition = `${gradingCompany} ${condition}`;
-                }
-
-                let qtyDisplay = quantity > 1 ? `<strong>Qty:</strong> ${quantity}<br>` : '';
-
-                const cardHtml = `
-                    <div class="card">
-                        <img src="${photoUrl}" alt="${productName}" class="card-img" onerror="this.src='https://placeholder.com'">
-                        <div class="card-info">
-                            <div class="card-tag">${sport}</div>
-                            <div class="card-title">${productName}</div>
-                            <div class="card-details">
-                                <strong>Condition:</strong> ${finalCondition} <br>
-                                ${qtyDisplay}
-                            </div>
-                            <div class="card-price">
-                                <span>Est. Value:</span>
-                                <span style="color:var(--success);">$${price.toFixed(2)}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.innerHTML += cardHtml;
+            if (rows.length === 0) {
+                document.getElementById('error-msg').innerText = "The collection.csv file was found, but it appears to be completely empty.";
+                return;
             }
 
-            totalValueEl.innerText = `$${totalPortfolioSum.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            // Loop through every single row found in the CSV file
+            rows.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                
+                // Loop through every column cell inside that row
+                row.forEach(cellText => {
+                    const cell = document.createElement(index === 0 ? 'th' : 'td');
+                    cell.innerText = cellText;
+                    tr.appendChild(cell);
+                });
+                
+                table.appendChild(tr);
+            });
         })
         .catch(err => {
-            document.getElementById('gallery-grid').innerHTML = "Error rendering rows from file container.";
+            document.getElementById('error-msg').innerText = "System Failure: " + err.message;
             console.error(err);
         });
     </script>
+
 </body>
 </html>
