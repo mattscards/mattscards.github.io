@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matt's Card Collection</title>
+    <title>MATT'$ CARD$</title>
     <style>
         :root {
             --bg-color: #000000;
             --card-bg: #ff0000;  
             --text-main: #ffffff; 
             --accent: #ff0000;   
-            --success: #00FF00; /* FIX: Changed to standard bright green */
+            --success: #00FF00; 
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -28,7 +28,6 @@
             border-bottom: 2px solid #2d2d2d;
             padding-bottom: 20px;
         }
-        /* FIXED: Replaced slate gray background with a clean solid white card module */
         .stats-box {
             background-color: #ffffff;
             color: #000000; 
@@ -45,7 +44,7 @@
             font-size: 2.3rem; 
             font-weight: bold;
             display: block;
-            color: var(--success); /* Uses the new brighter green */
+            color: var(--success); 
             margin-top: 5px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
         }
@@ -72,7 +71,6 @@
             border-color: #ffffff !important; 
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); 
         }
-        /* FIX: Shortened the card display images vertically from 380px to 280px */
         .card-img {
             width: 100%;
             height: 280px;
@@ -81,7 +79,6 @@
             padding-top: 10px;
             display: block;
         }
-        /* FIX: Tighter interior card padding sizes to shorten the text sections */
         .card-info {
             padding: 15px;
         }
@@ -93,9 +90,10 @@
             font-weight: bold;
             margin-bottom: 6px;
             text-align: center; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
         .card-title {
-            font-size: 1.15rem; /* Marginally smaller title to optimize space */
+            font-size: 1.15rem; 
             font-weight: bold; 
             margin: 0 0 10px 0;
             line-height: 1.3;
@@ -105,18 +103,18 @@
             text-align: center; 
         }
         .card-details {
-            font-size: 0.85rem; /* Made card details smaller */
+            font-size: 0.85rem; 
             color: #ffffff; 
             margin-bottom: 12px;
             line-height: 1.4;
             text-align: center; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
-        /* FIX: Scaled down font sizing and condensed layout bar spacing */
         .card-price {
-            font-size: 1.05rem; /* Made est value text smaller */
+            font-size: 1.05rem; 
             font-weight: bold;
             color: #ffffff; 
-            background-color: #000000; /* Pure black footer box strip */
+            background-color: #000000; 
             margin: 0 -15px -15px -15px;
             padding: 10px 15px;
             display: flex;
@@ -124,7 +122,7 @@
             text-align: left; 
         }
         .card-price span:last-child {
-            color: var(--success) !important; /* Forces bright green card numbers */
+            color: var(--success) !important; 
         }
         #error-msg { 
             color: var(--accent); 
@@ -158,10 +156,10 @@
 
     <header>
         <div style="display: flex; flex-direction: column; gap: 15px;">
-            <img src="logo.png" alt="Matt's Cards Logo" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
+            <img src="header.png" alt="MATT'$ CARD$" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
             <p style="margin:0; color:#ffffff; font-size: 1.2rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;
                       text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
-                My Sports Card Portfolio & Live Valuation
+                Sports Card Portfolio & Live Valuation
             </p>
         </div>
         <div class="stats-box">
@@ -175,7 +173,7 @@
     </main>
 
     <script>
-        const MY_COLLECTION_URL = 'https://sportscardspro.com';
+        const MY_COLLECTION_URL = 'https://www.sportscardspro.com/offers?seller=xpx2saa54ajblfoc25cjsiw7ne&status=collection';
 
         fetch('collection.csv')
         .then(res => {
@@ -201,18 +199,19 @@
 
                 const cells = lineText.split(',');
 
-                const cardID = cells ? cells.replace(/^"|"$/g, '').trim() : '';
-                const productName = cells ? cells.replace(/^"|"$/g, '').trim() : 'Unknown Card';
+                // FIX: Restored the explicit array sequence index numbers [0], [1], etc.
+                const cardID = cells[0] ? cells[0].replace(/^"|"$/g, '').trim() : '';
+                const productName = cells[1] ? cells[1].replace(/^"|"$/g, '').trim() : 'Unknown Card';
                 
-                let sport = cells ? cells.replace(/^"|"$/g, '').trim() : '';
+                let sport = cells[2] ? cells[2].replace(/^"|"$/g, '').trim() : '';
                 sport = sport.replace(' Cards', ''); 
 
-                const priceInPennies = parseFloat(cells ? cells.replace(/^"|"$/g, '').trim() : 0) || 0;
+                const priceInPennies = parseFloat(cells[3] ? cells[3].replace(/^"|"$/g, '').trim() : 0) || 0;
                 const price = priceInPennies / 100;
 
-                const includeString = cells ? cells.replace(/^"|"$/g, '').trim() : '';
-                const quantity = parseInt(cells ? cells.replace(/^"|"$/g, '').trim() : 1) || 1;
-                const gradingCompany = cells ? cells.replace(/^"|"$/g, '').trim() : '';
+                const includeString = cells[4] ? cells[4].replace(/^"|"$/g, '').trim() : '';
+                const quantity = parseInt(cells[9] ? cells[9].replace(/^"|"$/g, '').trim() : 1) || 1;
+                const gradingCompany = cells[12] ? cells[12].replace(/^"|"$/g, '').trim() : '';
                 
                 totalPortfolioSum += (price * quantity);
 
