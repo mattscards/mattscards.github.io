@@ -151,7 +151,19 @@
             height: auto;
             display: block;
         }
-        @media (max-width: 768px)
+@media (max-width: 768px) {
+    header {
+        flex-direction: column !important;
+        gap: 20px !important;
+        text-align: center !important;
+    }
+    header img {
+        align-self: center !important;
+    }
+    .bottom-banner-container {
+        width: 90% !important;
+    }
+}
     </style>
 </head>
 <body>
