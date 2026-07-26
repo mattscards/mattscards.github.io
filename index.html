@@ -156,18 +156,19 @@
 
         fetch(FULL_URL)
         .then(res => {
-            if (!res.ok) throw new Error("Could not find collection.csv in folder");
+            if (!res.ok) throw new Error("Could not find collection.csv");
             return res.text();
         })
         .then(csvText => {
-
-        fetch(FULL_URL)
-        .then(res => res.text())
-        .then(csvText => {
-       
-            const parsedData = Papa.parse(csvText, { header: true, skipEmptyLines: true });
-            const rows = parsedData.data;
+            // We added 'dynamicTyping' and a header trimmer to prevent formatting freezes
+            const parsedData = Papa.parse(csvText.trim(), { 
+                header: true, 
+                skipEmptyLines: true,
+                dynamicTyping: true,
+                transformHeader: function(h) { return h.trim().toLowerCase(); } // Force all column matches to lowercase smoothly
+            });
             
+            const rows = parsedData.data;
             const grid = document.getElementById('gallery-grid');
             const totalValueEl = document.getElementById('total-portfolio-value');
             
@@ -175,11 +176,11 @@
             let totalPortfolioSum = 0;
 
             rows.forEach(row => {
-
+                // Match column keys accurately by forcing everything lowercase
                 const cardId = row['id'] || '';
                 const productName = row['product-name'] || 'Unknown Card';
                 
-                let sport = row['console-name'] || '';
+                let sport = String(row['console-name'] || '');
                 sport = sport.replace(' Cards', ''); 
 
                 const priceInPennies = parseFloat(row['price-in-pennies']) || 0;
@@ -191,11 +192,11 @@
 
                 totalPortfolioSum += (price * quantity);
 
-                // Fetch image based on the unique ID
+                // Build image string directly using the unique ID
                 const photoUrl = cardId ? `https://pricecharting.com{cardId}.jpg` : 'https://placeholder.com';
 
                 let finalCondition = condition;
-                if (gradingCompany && gradingCompany !== 'None' && gradingCompany !== 'null') {
+                if (gradingCompany && gradingCompany !== 'None' && gradingCompany !== 'null' && gradingCompany !== 'undefined') {
                     finalCondition = `${gradingCompany} ${condition}`;
                 }
 
@@ -224,7 +225,7 @@
             totalValueEl.innerText = `$${totalPortfolioSum.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         })
         .catch(err => {
-            document.getElementById('gallery-grid').innerHTML = "Error syncing data feed. Double check your configuration settings.";
+            document.getElementById('gallery-grid').innerHTML = "Error rendering rows from file container.";
             console.error(err);
         });
     </script>
