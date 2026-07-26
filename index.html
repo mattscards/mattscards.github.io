@@ -189,6 +189,8 @@
                 
                 totalPortfolioSum += (price * quantity);
 
+                const photoUrl = cardId ? `${cardId}.jpg` : 'https://unsplash.com';
+                
                 let finalDetailsLabel = includeString;
                 if (gradingCompany && gradingCompany !== 'None' && gradingCompany !== 'null' && gradingCompany !== 'undefined') {
                     finalDetailsLabel = `${gradingCompany} - ${includeString}`;
