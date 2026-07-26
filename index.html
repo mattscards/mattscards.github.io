@@ -209,7 +209,7 @@
 
                 const cardHtml = `
                     <div class="card">
-                        <img src="${photoUrl}" alt="${productName}" class="card-img" onerror="this.src='https://placeholder.com'">
+                        <img src="${photoUrl}" alt="${productName}" class="card-img" onerror="this.onerror=null; this.src='https://placeholder.com'">
                         <div class="card-info">
                             <div class="card-tag">${sport}</div>
                             <div class="card-title">${productName}</div>
