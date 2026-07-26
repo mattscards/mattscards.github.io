@@ -151,18 +151,20 @@
     </main>
 
     <script>
-        // 1. PLACE YOUR SPREADSHEET KEY HERE
-        const SHEET_ID = '1kqFhCWpaWhSKK2tdhOwJFUiot600z88Hthet2PSr-xc';
-        // 2. PLACE YOUR EXACT TAB NAME HERE
-        const SHEET_TITLE = 'collection'; 
 
-        // This fetches the raw text from Google Sheets exactly as a pure CSV file stream
-        const FULL_URL = `https://google.com{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_TITLE)}`;
+        const FULL_URL = 'collection.csv';
+
+        fetch(FULL_URL)
+        .then(res => {
+            if (!res.ok) throw new Error("Could not find collection.csv in folder");
+            return res.text();
+        })
+        .then(csvText => {
 
         fetch(FULL_URL)
         .then(res => res.text())
         .then(csvText => {
-            // Papa.parse automatically cleans up the CSV data and splits it into perfect arrays
+       
             const parsedData = Papa.parse(csvText, { header: true, skipEmptyLines: true });
             const rows = parsedData.data;
             
@@ -173,7 +175,7 @@
             let totalPortfolioSum = 0;
 
             rows.forEach(row => {
-                // Map columns exactly by the CSV header names you provided
+
                 const cardId = row['id'] || '';
                 const productName = row['product-name'] || 'Unknown Card';
                 
