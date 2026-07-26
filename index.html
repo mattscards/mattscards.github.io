@@ -152,7 +152,7 @@
 
     <script>
 
-        const FULL_URL = 'collection.csv';
+           const FULL_URL = 'collection.csv';
 
         fetch(FULL_URL)
         .then(res => {
@@ -160,12 +160,10 @@
             return res.text();
         })
         .then(csvText => {
-            // We added 'dynamicTyping' and a header trimmer to prevent formatting freezes
+            // Read columns as raw lines to avoid strict case-matching freezes
             const parsedData = Papa.parse(csvText.trim(), { 
-                header: true, 
-                skipEmptyLines: true,
-                dynamicTyping: true,
-                transformHeader: function(h) { return h.trim().toLowerCase(); } // Force all column matches to lowercase smoothly
+                header: false, // We read by position index numbers so formatting cannot break it
+                skipEmptyLines: true
             });
             
             const rows = parsedData.data;
@@ -175,24 +173,28 @@
             grid.innerHTML = ''; 
             let totalPortfolioSum = 0;
 
-            rows.forEach(row => {
-                // Match column keys accurately by forcing everything lowercase
-                const cardId = row['id'] || '';
-                const productName = row['product-name'] || 'Unknown Card';
+            // Loop starting at Index 1 to safely skip your header titles row
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                if (!row || row.length < 4) continue;
+
+                // Absolute column mapping based on your exact CSV list structure:
+                const cardId = row[0] || '';              // id
+                const productName = row[1] || 'Unknown';   // product-name
                 
-                let sport = String(row['console-name'] || '');
+                let sport = String(row[2] || '');         // console-name
                 sport = sport.replace(' Cards', ''); 
 
-                const priceInPennies = parseFloat(row['price-in-pennies']) || 0;
+                const priceInPennies = parseFloat(row[3]) || 0; // price-in-pennies
                 const price = priceInPennies / 100;
 
-                const condition = row['condition-string'] || 'Ungraded';
-                const quantity = parseInt(row['quantity']) || 1;
-                const gradingCompany = row['grading-company'] || '';
+                const condition = row[5] || 'Ungraded';   // condition-string
+                const quantity = parseInt(row[9]) || 1;   // quantity
+                const gradingCompany = row[12] || '';     // grading-company
 
                 totalPortfolioSum += (price * quantity);
 
-                // Build image string directly using the unique ID
+                // Fetch official thumbnail image link based on its database index code
                 const photoUrl = cardId ? `https://pricecharting.com{cardId}.jpg` : 'https://placeholder.com';
 
                 let finalCondition = condition;
@@ -220,7 +222,7 @@
                     </div>
                 `;
                 grid.innerHTML += cardHtml;
-            });
+            }
 
             totalValueEl.innerText = `$${totalPortfolioSum.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         })
