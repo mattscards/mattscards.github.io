@@ -153,18 +153,26 @@
             height: auto;
             display: block;
         }
-@media (max-width: 768px) {
-    header {
-        flex-direction: column !important;
-        gap: 20px !important;
-        text-align: center !important;
-    }
-    header img {
-        align-self: center !important;
-    }
-    .bottom-banner-container {
-        width: 90% !important;
-    }
+        @media (max-width: 768px) {
+        header, #main-header {
+            flex-direction: column !important;
+            gap: 20px !important;
+            text-align: center !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 100% !important;
+        }
+        header div, #main-header div {
+            align-items: center !important;
+            width: 100% !important;
+        }
+        header img, #main-header img {
+            align-self: center !important;
+            margin: 0 auto !important;
+        }
+       .bottom-banner-container {
+            width: 90% !important;
+        }
 }
     </style>
 </head>
