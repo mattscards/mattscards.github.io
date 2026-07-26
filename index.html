@@ -51,6 +51,12 @@
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px;
         }
+        
+        /* Turning the entire card container into a clickable link style */
+        .card-link {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
         .card {
             background-color: var(--card-bg);
             border-radius: 12px;
@@ -63,40 +69,34 @@
             border-color: var(--accent);
             box-shadow: 0 10px 20px rgba(255, 0, 0, 0.15);
         }
-        .card-img {
-            width: 100%;
-            height: 380px;
-            background-color: #1a1a1a;
-            object-fit: contain;
-            padding-top: 10px;
-        }
         .card-info {
-            padding: 20px;
+            padding: 25px;
         }
         .card-tag {
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: #a1a1aa;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
         .card-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
-            margin: 0 0 10px 0;
+            margin: 0 0 15px 0;
+            line-height: 1.4;
         }
         .card-details {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #d4d4d8;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             line-height: 1.5;
         }
         .card-price {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--text-main);
             border-top: 1px solid #2d2d2d;
-            padding-top: 10px;
+            padding-top: 15px;
             display: flex;
             justify-content: space-between;
         }
@@ -146,10 +146,13 @@
     </header>
 
     <main class="grid-container" id="gallery-grid">
-        <div id="error-msg">Loading your collection live from file container...</div>
+        <div id="error-msg">Loading your collection live...</div>
     </main>
 
     <script>
+        // 1. PUT YOUR EXACT PUBLIC SPORTSCARDSPRO PROFILE LINK HERE
+        const MY_COLLECTION_URL = 'https://sportscardspro.com';
+
         fetch('collection.csv')
         .then(res => {
             if (!res.ok) throw new Error("Could not find collection.csv in folder.");
@@ -168,19 +171,16 @@
                 return;
             }
 
-            // Loop starting at index 1 to safely skip the text column header titles row
             for (let i = 1; i < lines.length; i++) {
                 const lineText = lines[i].trim();
-                if (!lineText) continue; // Skip blank lines safely
+                if (!lineText) continue; 
 
-                // Parse row text accurately by commas
                 const cells = lineText.split(',');
 
-                // Extract fields by your strict columns placement sequence order
                 const productName = cells[1] ? cells[1].replace(/^"|"$/g, '').trim() : 'Unknown Card';
                 
                 let sport = cells[2] ? cells[2].replace(/^"|"$/g, '').trim() : '';
-                sport = sport.replace(' Cards', ''); // Clean up layout text labels to just say "Baseball"
+                sport = sport.replace(' Cards', ''); 
 
                 const priceInPennies = parseFloat(cells[3] ? cells[3].replace(/^"|"$/g, '').trim() : 0) || 0;
                 const price = priceInPennies / 100;
@@ -189,13 +189,8 @@
                 const quantity = parseInt(cells[9] ? cells[9].replace(/^"|"$/g, '').trim() : 1) || 1;
                 const gradingCompany = cells[12] ? cells[12].replace(/^"|"$/g, '').trim() : '';
                 
-                // NEW: Read your new image links from the very last column (Column O / Index 14)
-                const photoUrl = cells[14] ? cells[14].replace(/^"|"$/g, '').trim() : 'https://unsplash.com';
-
-                // Add to dynamic dashboard balance calculation math
                 totalPortfolioSum += (price * quantity);
 
-                // Build a nice grading company label combination strings cleanly
                 let finalCondition = condition;
                 if (gradingCompany && gradingCompany !== 'None' && gradingCompany !== 'null' && gradingCompany !== 'undefined') {
                     finalCondition = `${gradingCompany} ${condition}`;
@@ -203,27 +198,28 @@
 
                 let qtyDisplay = quantity > 1 ? `<strong>Qty:</strong> ${quantity}<br>` : '';
 
+                // Wraps the card layout inside an anchor tag pointing directly to your profile link
                 const cardHtml = `
-                    <div class="card">
-                        <img src="${photoUrl}" alt="${productName}" class="card-img" onerror="this.onerror=null; this.src='https://unsplash.com';">
-                        <div class="card-info">
-                            <div class="card-tag">${sport}</div>
-                            <div class="card-title">${productName}</div>
-                            <div class="card-details">
-                                <strong>Condition:</strong> ${finalCondition} <br>
-                                ${qtyDisplay}
-                            </div>
-                            <div class="card-price">
-                                <span>Est. Value:</span>
-                                <span style="color:var(--success);">$${price.toFixed(2)}</span>
+                    <a href="${MY_COLLECTION_URL}" target="_blank" class="card-link">
+                        <div class="card">
+                            <div class="card-info">
+                                <div class="card-tag">${sport}</div>
+                                <div class="card-title">${productName}</div>
+                                <div class="card-details">
+                                    <strong>Condition:</strong> ${finalCondition} <br>
+                                    ${qtyDisplay}
+                                </div>
+                                <div class="card-price">
+                                    <span>Est. Value:</span>
+                                    <span style="color:var(--success);">$${price.toFixed(2)}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 `;
                 grid.innerHTML += cardHtml;
             }
 
-            // Push final total currency calculation out to your top dashboard box
             totalValueEl.innerText = `$${totalPortfolioSum.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         })
         .catch(err => {
