@@ -174,7 +174,7 @@
                 if (!lineText) continue; 
 
                 const cells = lineText.split(',');
-                const cardId = cells[0] ? cells[0].replace(/^"|"$/g, '').trim() : '';
+                const cardID = cells[0] ? cells[0].replace(/^"|"$/g, '').trim() : '';
                 const productName = cells[1] ? cells[1].replace(/^"|"$/g, '').trim() : 'Unknown Card';
                 
                 let sport = cells[2] ? cells[2].replace(/^"|"$/g, '').trim() : '';
@@ -189,7 +189,7 @@
                 
                 totalPortfolioSum += (price * quantity);
 
-                const photoUrl = cardId ? `${cardId}.jpg` : 'https://unsplash.com';
+                const photoUrl = cardID ? `${cardID}.jpg` : 'https://unsplash.com';
                 
                 let finalDetailsLabel = includeString;
                 if (gradingCompany && gradingCompany !== 'None' && gradingCompany !== 'null' && gradingCompany !== 'undefined') {
