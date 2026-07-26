@@ -28,14 +28,6 @@
             border-bottom: 2px solid #2d2d2d;
             padding-bottom: 20px;
         }
-        .header-wrapper {
-            display: flex !important;
-            justify-content: space-between !important;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
         .stats-box {
             background-color: #ffffff;
             color: #000000; 
@@ -197,23 +189,26 @@
     </style>
 </head>
 <body>
-    <header>
-        <div style="display: flex; flex-direction: column; gap: 15px;">
-            <img src="logo.png" alt="Matt'$ Card$" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
-            <p style="margin:0; color:#ffffff; font-size: 1.2rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;
-                      text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
-                Sports Card Portfolio & Live Valuation
-            </p>
-            <p style="margin:0; color:#ffffff; font-size: .95rem;
-                      text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
-                <i>Updated 7/25/26</i>
-            </p>
-        </div>
-        <div class="stats-box">
-            Total Estimated Value
-            <span id="total-portfolio-value">$0.00</span>
-        </div>
-    </header>
+<header style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; width: 100%; padding: 20px;">
+    
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+        <img src="logo.png" alt="Matt'$ Card$" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
+        <p style="margin:0; color:#ffffff; font-size: 1.2rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;
+                  text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
+            Sports Card Portfolio & Live Valuation
+        </p>
+        <p style="margin:0; color:#ffffff; font-size: .95rem;
+                  text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
+            <i>Updated 7/25/26</i>
+        </p>
+    </div>
+
+    <div class="stats-box">
+        Total Estimated Value
+        <span id="total-portfolio-value">$0.00</span>
+    </div>
+
+</header>
 
     <main class="grid-container" id="gallery-grid">
         <div id="error-msg">Loading your collection live...</div>
@@ -301,7 +296,7 @@
   <div class="bottom-banner-wrapper">
     <div class="bottom-banner-container">
       <img src="banner.jpeg" alt="Banner">
-               <p style="text-align:center; margin:1; color:#ffffff; font-size: .75rem; font-weight: bold; letter-spacing: 0.05em;
+               <p style="text-align:center; margin:0; color:#ffffff; font-size: .75rem; font-weight: bold; letter-spacing: 0.05em;
                       text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
                 Copyright © 1985-2026 Matt'$ Card$
             </p>
