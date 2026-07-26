@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATT'S CARDS</title>
+    <title>Matt's Card Collection</title>
     <style>
         :root {
             --bg-color: #000000;
@@ -107,15 +107,6 @@
             padding: 40px;
             color: #a1a1aa;
         }
-        a {
-            color: #ff0000 !important;
-            text-decoration: none;
-        }
-        a:hover {
-            color: #ff3333 !important;
-            text-decoration: underline;
-        }
-
         @media (max-width: 768px) {
             header {
                 flex-direction: column !important;
@@ -136,15 +127,17 @@
             }
         }
     </style>
+    <!-- We are loading PapaParse, the world's most trusted, free, ad-free CSV reader tool -->
+    <script src="https://cloudflare.com"></script>
 </head>
 <body>
 
     <header>
         <div style="display: flex; flex-direction: column; gap: 15px;">
-            <img src="header.png" alt="MATT'S CARDS" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
+            <img src="logo.png" alt="Matt's Cards Logo" style="max-height: 120px; width: auto; object-fit: contain; align-self: flex-start;">
             <p style="margin:0; color:#ffffff; font-size: 1.2rem; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase;
                       text-shadow: 1px 1px 0px #334155, 2px 2px 0px #1e293b, 3px 3px 0px #0f172a, 4px 4px 5px rgba(0,0,0,0.8);">
-                Sports Card Portfolio & Live Valuation
+                My Sports Card Portfolio & Live Valuation
             </p>
         </div>
         <div class="stats-box">
@@ -158,108 +151,52 @@
     </main>
 
     <script>
-        const SHEET_ID = '1kuV9SUJYadPdIJ-ExWuZrBYlor3HMlbOPNHXo7LZr5w';
-        const SHEET_TITLE = 'Collection'; 
+        // 1. PLACE YOUR SPREADSHEET KEY HERE
+        const SHEET_ID = '1kqFhCWpaWhSKK2tdhOwJFUiot600z88Hthet2PSr-xc';
+        // 2. PLACE YOUR EXACT TAB NAME HERE
+        const SHEET_TITLE = 'collection'; 
+
+        // This fetches the raw text from Google Sheets exactly as a pure CSV file stream
         const FULL_URL = `https://google.com{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_TITLE)}`;
+
         fetch(FULL_URL)
         .then(res => res.text())
         .then(csvText => {
-            const lines = csvText.split('\n');
-            const grid = document.getElementById('gallery-grid');
-            const totalValueEl = document.getElementById('total-portfolio-value');
-            grid.innerHTML = ''; 
-            let totalPortfolioSum = 0;
-            for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue;
-    
-                const row = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(val => val.replace(/^"|"$/g, '').trim());
-                const cardId = row[0] || '';
-                const productName = row[1] || 'Unknown Card';
-                
-                let sport = row[2] || '';
-                sport = sport.replace(' Cards', ''); 
-
-                const priceInPennies = parseFloat(row[3]) || 0;
-                const price = priceInPennies / 100;
-
-                const condition = row[5] || 'Ungraded';
-                const quantity = parseInt(row[9]) || 1;
-                const gradingCompany = row[12] || '';
-
-                totalPortfolioSum += (price * quantity);
-                const photoUrl = cardId ? `https://pricecharting.com{cardId}.jpg` : 'https://placeholder.com';
-                let finalCondition = condition;
-                if (gradingCompany && gradingCompany !== 'None' && gradingCompany !== 'null') {
-                    finalCondition = `${gradingCompany} ${condition}`;
-                }
-                let qtyDisplay = quantity > 1 ? `<strong>Qty:</strong> ${quantity}<br>` : '';
-                const cardHtml = `
-                    <div class="card">
-                        <img src="${photoUrl}" alt="${productName}" class="card-img" onerror="this.src='https://placeholder.com'">
-                        <div class="card-info">
-                            <div class="card-tag">${sport}</div>
-                            <div class="card-title">${productName}</div>
-                            <div class="card-details">
-                                <strong>Condition:</strong> ${finalCondition} <br>
-                                ${qtyDisplay}
-                            </div>
-                            <div class="card-price">
-                                <span>Est. Value:</span>
-                                <span style="color:var(--success);">$${price.toFixed(2)}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.innerHTML += cardHtml;
-            }
-
-            totalValueEl.innerText = `$${totalPortfolioSum.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-        })
-        .catch(err => {
-            document.getElementById('gallery-grid').innerHTML = "Error syncing data feed. Double check that your Google Sheet sharing is set to 'Anyone with the link can view'.";
-            console.error(err);
-        });
-
-        fetch(FULL_URL)
-        .then(res => res.text())
-        .then(rep => {
-            const data = JSON.parse(rep.substr(47).slice(0, -2));
+            // Papa.parse automatically cleans up the CSV data and splits it into perfect arrays
+            const parsedData = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+            const rows = parsedData.data;
+            
             const grid = document.getElementById('gallery-grid');
             const totalValueEl = document.getElementById('total-portfolio-value');
             
             grid.innerHTML = ''; 
             let totalPortfolioSum = 0;
 
-            data.table.rows.forEach(row => {
-                if (!row.c || !row.c[0]) return; // Skip completely empty rows safely
-
-                // Safely extract variables from the spreadsheet positions
-                const cardId = row.c[0] ? row.c[0].v : '';
-                const productName = row.c[1] ? row.c[1].v : 'Unknown Card';
+            rows.forEach(row => {
+                // Map columns exactly by the CSV header names you provided
+                const cardId = row['id'] || '';
+                const productName = row['product-name'] || 'Unknown Card';
                 
-                let sport = row.c[2] ? row.c[2].v : '';
-                sport = sport.replace(' Cards', ''); // Cleans up "Baseball Cards" to just "Baseball"
+                let sport = row['console-name'] || '';
+                sport = sport.replace(' Cards', ''); 
 
-                const priceInPennies = row.c[3] ? parseFloat(row.c[3].v) : 0;
+                const priceInPennies = parseFloat(row['price-in-pennies']) || 0;
                 const price = priceInPennies / 100;
 
-                const condition = row.c[5] ? row.c[5].v : 'Ungraded';
-                const quantity = row.c[9] ? parseInt(row.c[9].v) : 1;
-                const gradingCompany = row.c[12] ? row.c[12].v : '';
+                const condition = row['condition-string'] || 'Ungraded';
+                const quantity = parseInt(row['quantity']) || 1;
+                const gradingCompany = row['grading-company'] || '';
 
-                // Calculate grand total portfolio value
                 totalPortfolioSum += (price * quantity);
 
-                // Fetch official thumbnail image link from SportsCardsPro database
+                // Fetch image based on the unique ID
                 const photoUrl = cardId ? `https://pricecharting.com{cardId}.jpg` : 'https://placeholder.com';
 
-                // Combine grading company and condition if graded (e.g., "PSA 10")
                 let finalCondition = condition;
-                if (gradingCompany && gradingCompany !== 'None') {
+                if (gradingCompany && gradingCompany !== 'None' && gradingCompany !== 'null') {
                     finalCondition = `${gradingCompany} ${condition}`;
                 }
 
-                // Show quantity label only if you own more than 1 copy of the card
                 let qtyDisplay = quantity > 1 ? `<strong>Qty:</strong> ${quantity}<br>` : '';
 
                 const cardHtml = `
@@ -285,7 +222,7 @@
             totalValueEl.innerText = `$${totalPortfolioSum.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
         })
         .catch(err => {
-            document.getElementById('loading').innerText = "Make sure your Google Sheet access is set to 'Anyone with the link can view'.";
+            document.getElementById('gallery-grid').innerHTML = "Error syncing data feed. Double check your configuration settings.";
             console.error(err);
         });
     </script>
