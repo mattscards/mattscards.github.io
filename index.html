@@ -174,7 +174,7 @@
                 if (!lineText) continue; 
 
                 const cells = lineText.split(',');
-
+                const cardId = cells[0] ? cells[0].replace(/^"|"$/g, '').trim() : '';
                 const productName = cells[1] ? cells[1].replace(/^"|"$/g, '').trim() : 'Unknown Card';
                 
                 let sport = cells[2] ? cells[2].replace(/^"|"$/g, '').trim() : '';
