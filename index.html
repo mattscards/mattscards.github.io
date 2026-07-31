@@ -47,6 +47,14 @@
             margin-top: 5px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
         }
+        .stats-link-box {
+            transition: transform 0.1s ease, opacity 0.1s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .stats-link-box:active {
+            transform: scale(0.97);
+            opacity: 0.85;
+        }
         .grid-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -204,8 +212,11 @@
         <p style="margin: 5px 0 0 0; color: #ff4d4d; font-size: 0.85rem; font-weight: bold;">
             <i>Updated 7/31/26</i>
         </p>
+        <span style="font-size: 0.75rem; color: #888888; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">
+            Tap for more details →
+        </span>
     </div>
- </a>  
+</a>
 </header>
 <div style="background-color: #000000; padding: 25px; border: 4px solid #FF0000; border-radius: 12px; max-width: 1200px; margin: 20px auto; overflow: hidden;">
     <div style="background-color: #FFFFFF; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(255, 0, 0, 0.2);">
