@@ -58,33 +58,45 @@
             height: auto;
             display: block;
         }
-        @media (max-width: 768px) {
-        header, #main-header {
-            flex-direction: column !important;
-            gap: 10px !important;
-            text-align: center !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            width: 100% !important;
+        .responsive-iframe {
+            width: 100%; 
+            height: 800px; 
+            border: none; 
+            background: #000000; 
+            filter: invert(1) hue-rotate(55deg) brightness(0.95) contrast(1.15); 
+            display: block;
         }
-        header div, #main-header div {
-            align-items: center !important;
-            width: 100% !important;
-        }
-        header img, #main-header img {
-            align-self: center !important;
-            margin: 0 auto !important;
-        }
-       .bottom-banner-container {
-            width: 90% !important;
-        }
-        .stats-box {
-            width: fit-content !important;
-            max-width: 90% !important;
-            margin: -15px auto 5px auto !important; 
-            display: flex !important; 
-            padding: 5px 20px !important;
-         }    
+@media (max-width: 768px) {
+    header, #main-header {
+        flex-direction: column !important;
+        gap: 10px !important;
+        text-align: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        width: 100% !important;
+    }
+    header div, #main-header div {
+        align-items: center !important;
+        width: 100% !important;
+    }
+    header img, #main-header img {
+        align-self: center !important;
+        margin: 0 auto !important;
+    }
+    .bottom-banner-container {
+        width: 90% !important;
+    }
+    .stats-box {
+        width: fit-content !important;
+        max-width: 90% !important;
+        margin: -15px auto 5px auto !important; 
+        display: flex !important; 
+        padding: 5px 20px !important;
+    }
+    .responsive-iframe {
+        height: 500px !important; 
+    }
+}   
     </style>
 </head>
 <body>
@@ -150,13 +162,13 @@
     <iframe 
         src="https://www.sportscardspro.com/offers?seller=xpx2saa54ajblfoc25cjsiw7ne&status=collection" 
         title="SportsCardsPro Collection"
-        style="width: 100%; height: 800px; border: none; background: #000000; filter: invert(1) hue-rotate(55deg) brightness(0.95) contrast(1.15); display: block;"
+        class="responsive-iframe"
         frameborder="0"
         allowfullscreen>
     </iframe>
 </div>
 <div style="text-align: center; margin-top: 1px;">
-    <a href="https://sportscardspro.com" 
+    <a href="https://www.sportscardspro.com/offers?seller=xpx2saa54ajblfoc25cjsiw7ne&status=collection" 
        target="_blank" 
        style="color: #ff0000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; text-decoration: none; opacity: 0.75;">
        → Open collection in a new tab ←
