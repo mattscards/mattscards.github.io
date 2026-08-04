@@ -51,14 +51,20 @@
             background: linear-gradient(90deg, #0077b8, #82c40c, #0077b8) -100%/ 200%;
             -webkit-background-clip: text;
             background-clip: text;
-            color: transparent;
+            color: #ffffff;
             font: 900 24px 'Exo', sans-serif;
             animation: shimmer 2s linear infinite;
             margin-top: 10px;
+            text-decoration: none;
         }
 
-        @keyframes shimmer { 
-            to { background-position: 100% } 
+        @keyframes shimmer {
+            0% {
+            background-position: 0% center;
+        }
+            100% {
+            background-position: 200% center;
+            }
         }
 
         @media (forced-colors: active) {
