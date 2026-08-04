@@ -201,38 +201,40 @@
         }
 
         .full-width-footer {
-            max-width: 1200px;
-            width: 100%;
-            height: auto;
-            margin: 12px auto;
+            max-width: 1200px !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            margin: 12px auto !important;
             box-sizing: border-box;
         }
 
         .full-width-footer .collection-link {
             padding: 6px 0px;
-            display: block;
-            width: 100%;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
-            height: 100%;
-            padding: 6px 0px;        
+            display: block !important;     
+            width: 100% !important;
+            height: auto !important;
+            padding: 6px 0px !important;
+            text-decoration: none !important;
             box-sizing: border-box;
+
         }
 
         .full-width-footer .custom-card-inner {
-            height: auto;
+            height: auto !important;
+            min-height: 0 !important;
         }
 
         .full-box-text {
-            display: block;
+            display: block !important;
             text-align: center;
-            color: #ffffff;
-            text-decoration: none;
-            font: 700 14px 'Exo', sans-serif;
-            margin: 0; 
-            letter-spacing: 0.5px;
-            line-height: 1.2; 
+            color: #ffffff !important;
+            text-decoration: none !important;
+            font: 700 14px 'Exo', sans-serif !important; 
+            margin: 0 !important;          /* Removes default paragraph margins causing extra height */
+            line-height: 1.2 !important;  
         }
         
         @media (max-width: 768px) {
