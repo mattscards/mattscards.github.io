@@ -52,10 +52,12 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            font: 900 clamp(2em, 8vw, 4.5em) exo, sans-serif;
-            animation: shimmer 2s linear infinite;
-            margin-top: 15px;
-        }
+    
+    font: 900 24px 'Exo', sans-serif;
+    
+    animation: shimmer 2s linear infinite;
+    margin-top: 15px;
+}
 
         @keyframes shimmer { 
             to { background-position: 100% } 
@@ -175,6 +177,10 @@
                 max-width: 220px; 
             }
 
+            .loading-text {
+                font-size: 18px;
+            }
+            
             .iframe-wrapper {
                 height: 550px; 
             }
