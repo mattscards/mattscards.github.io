@@ -45,6 +45,29 @@
             object-fit: contain;
         }
 
+        .loading-text {
+            display: block;
+            text-align: center;
+            background: linear-gradient(90deg, #0077b8, #82c40c, #0077b8) -100%/ 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font: 900 clamp(2em, 8vw, 4.5em) exo, sans-serif;
+            animation: shimmer 2s linear infinite;
+            margin-top: 15px;
+        }
+
+        @keyframes shimmer { 
+            to { background-position: 100% } 
+        }
+
+        @media (forced-colors: active) {
+            .loading-text {
+                background: #000000;
+                color: #82c40c;
+            }
+        }
+        
         .custom-card-border {
             --background: linear-gradient(to left, #0077b8 0%, #82c40c 100%);
             padding: 4px; 
@@ -186,6 +209,7 @@
 
         <header class="logo-section">
             <img src="mattscards.png" alt="Matt'$ Card$" class="logo-image">
+            <p class="loading-text">Sports Card Portfolio and Live Valuation</p>
         </header>
 
         <main class="custom-card-border iframe-wrapper">
