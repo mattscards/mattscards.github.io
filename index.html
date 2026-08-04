@@ -203,19 +203,25 @@
         .full-width-footer {
             max-width: 1200px;
             width: 100%;
-            margin-left: auto;
-            margin-right: auto;
+            height: auto;
+            margin: 12px auto;
             box-sizing: border-box;
         }
 
         .full-width-footer .collection-link {
             padding: 0.5rem 1rem;
-            display: flex;
+            display: block;
+            width: 100%;
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            width: 100%;
             height: 100%;
+            padding: 6px 0px;        
+            box-sizing: border-box;
+        }
+
+        .full-width-footer .custom-card-inner {
+            height: auto;
         }
 
         .full-box-text {
@@ -226,6 +232,7 @@
             font: 700 14px 'Exo', sans-serif;
             margin: 0; 
             letter-spacing: 0.5px;
+            line-height: 1.2; 
         }
         
         @media (max-width: 768px) {
