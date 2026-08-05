@@ -200,15 +200,6 @@
             text-align: center;
         }
 
-        .full-width-footer {
-            max-width: 1200px !important;
-            width: 100% !important;
-            height: auto !important;
-            min-height: 0 !important;
-            margin: 12px auto !important;
-            box-sizing: border-box;
-        }
-
         .full-width-footer .collection-link {
             padding: 6px 0px;
             align-items: center;
@@ -226,17 +217,41 @@
             height: auto !important;
             min-height: 0 !important;
         }
+        
+        .shimmer-banner-outer {
+            max-width: 1200px;
+            width: 100%;
+            padding: 4px;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin: 12px auto;
+            box-sizing: border-box;
+    
+            background: linear-gradient(90deg, #0077b8, #82c40c, #0077b8);
+            background-size: 200% 100%;
+            animation: shimmer 2s linear infinite;
+        }
 
-        .full-box-text {
-            display: block !important;
+        .shimmer-banner-inner {
+            background: transparent;
+            width: 100%;
+            border-radius: .7rem;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .shimmer-banner-link {
+            display: block;
+            width: 100%;
             text-align: center;
             color: #ffffff !important;
             text-decoration: none !important;
-            font: 700 14px 'Exo', sans-serif !important; 
-            margin: 0 !important;          /* Removes default paragraph margins causing extra height */
-            line-height: 1.2 !important;  
+            font: 700 14px 'Exo', sans-serif;
+            padding: 6px 0px; 
+            box-sizing: border-box;
         }
-        
+
+    
         @media (max-width: 768px) {
           
             body {
